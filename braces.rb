@@ -1,6 +1,6 @@
 class Braces
 
-  def matchem (str)
+  def match_em (str)
   
     open_pcount = 0
     closed_pcount = 0
@@ -10,14 +10,27 @@ class Braces
     ptotal = 0
     btotal = 0
     
+    state = 0
+
     str.each_char do |c|
-      open_pcount += 1 if c == '('
-      closed_pcount += 1 if c == ')'
-      open_bcount += 1 if c == '{'
-      closed_bcount += 1 if c == '}'
+      if c == '('
+        open_pcount += 1 
+        state = 0
+      elsif c == ')'
+        closed_pcount += 1 
+        state = 1
+      elsif c == '{'
+        open_bcount += 1 if c == '{'
+        state = 1
+      elsif c == '}'
+        closed_bcount += 1 
+        return false if state == 0
+        state = 0
+      end
             
       ptotal = open_pcount - closed_pcount
       btotal = open_bcount - closed_bcount
+    
       return false if (ptotal < 0 or btotal < 0)
       
     end
